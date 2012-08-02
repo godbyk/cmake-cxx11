@@ -17,5 +17,5 @@ int main(void)
     base b;
     sub s;
 
-    return (b.foo(2) * 2 == sub.foo(2)) ? 0 : 1;
+    return (b.foo(2) * 2 == s.foo(2)) ? 0 : 1;
 }
