@@ -43,22 +43,22 @@ function(_cxx11_compile_program SRCFILE BINDIR RESULT_VAR SHOULD_COMPILE)
         COMPILE_DEFINITIONS     "${CXX11_COMPILER_FLAGS}"
         OUTPUT_VARIABLE         _COMPILE_OUTPUT)
 
-    if (${_COMPILE_RESULT} AND SHOULD_COMPILE)
+    if (_COMPILE_RESULT AND SHOULD_COMPILE)
         set(msg         "compilation succeeded (expected success)\n")
         set(logfile     "CMakeOutput")
         set(${RESULT_VAR} TRUE PARENT_SCOPE)
 
-    elseif (${_COMPILE_RESULT} AND NOT SHOULD_COMPILE)
+    elseif (_COMPILE_RESULT AND NOT SHOULD_COMPILE)
         set(msg         "compilation succeeded (expected failure)\n")
         set(logfile     "CMakeError")
         set(${RESULT_VAR} FALSE PARENT_SCOPE)
 
-    elseif (NOT ${_COMPILE_RESULT} AND SHOULD_COMPILE)
+    elseif (NOT _COMPILE_RESULT AND SHOULD_COMPILE)
         set(msg         "compilation failed (expected success)\n")
         set(logfile     "CMakeError")
         set(${RESULT_VAR} FALSE PARENT_SCOPE)
 
-    elseif (NOT ${_COMPILE_RESULT} AND NOT SHOULD_COMPILE)
+    elseif (NOT _COMPILE_RESULT AND NOT SHOULD_COMPILE)
         set(msg         "compilation failed (expected failure)\n")
         set(logfile     "CMakeOutput")
         set(${RESULT_VAR} TRUE PARENT_SCOPE)
@@ -68,7 +68,7 @@ function(_cxx11_compile_program SRCFILE BINDIR RESULT_VAR SHOULD_COMPILE)
     # The compilation was successfully.
     file(APPEND ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${logfile}.log
         "CXX11 Feature ${FEATURE_NAME} : ${msg}"
-        "${_COMPILE_OUTPUT}\n\n"})
+        "${_COMPILE_OUTPUT}\n\n")
 
 endfunction(_cxx11_compile_program)
 
