@@ -16,7 +16,7 @@ seq::seq(std::initializer_list<int> list)
 
 int seq::length() const
 {
-    return m_v.length();
+    return m_v.size();
 }
 
 int main(void)
