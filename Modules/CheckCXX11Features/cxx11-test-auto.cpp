@@ -1,7 +1,12 @@
-int main(void)
-{
-	auto i = 42;
-	auto f = 42.0;
 
-	return (i == f) ? 0 : 1;
+int main()
+{
+	auto i = 5;
+	auto f = 3.14159f;
+	auto d = 3.14159;
+	bool ret = (
+		(sizeof(f) < sizeof(d)) &&
+		(sizeof(i) == sizeof(int))
+	);
+	return ret ? 0 : 1;
 }

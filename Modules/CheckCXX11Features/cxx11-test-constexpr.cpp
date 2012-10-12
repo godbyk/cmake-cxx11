@@ -1,13 +1,19 @@
-#include <sys/types.h>
-
-constexpr size_t intsize()
+constexpr int square(int x)
 {
-	return sizeof(int);
+	return x*x;
 }
 
-int main(void)
+constexpr int the_answer()
 {
-	unsigned char size_like_int[intsize()];
+	return 42;
+}
 
-	return sizeof(size_like_int) >= sizeof(int) ? 0 : 1;
+int main()
+{
+	int test_arr[square(3)];
+	bool ret = (
+		(square(the_answer()) == 1764) &&
+		(sizeof(test_arr)/sizeof(test_arr[0]) == 9)
+	);
+	return ret ? 0 : 1;
 }
