@@ -20,4 +20,5 @@ foreach (flag
     endif ()
 endforeach (flag)
 
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} ${CXX11_COMPILER_FLAGS})
 add_executable(CXX11Features cxx11features.cxx)
