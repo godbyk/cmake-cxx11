@@ -1,4 +1,20 @@
 # - Check which parts of the C++11 standard the compiler supports
+#
+# When found it will set the following variables
+#
+#  CXX11_COMPILER_FLAGS         - the compiler flags needed to get C++11 features
+#
+#  HAS_CXX11_AUTO               - auto keyword
+#  HAS_CXX11_CLASS_OVERRIDE     - override and final keywords for classes and methods
+#  HAS_CXX11_CONSTEXPR          - constexpr keyword
+#  HAS_CXX11_CSTDINT_H          - cstdint header
+#  HAS_CXX11_FUNC               - __func__ preprocessor constant
+#  HAS_CXX11_INITIALIZER_LIST   - initializer list
+#  HAS_CXX11_LONG_LONG          - long long signed & unsigned types
+#  HAS_CXX11_NULLPTR            - nullptr
+#  HAS_CXX11_RVALUE_REFERENCES  - rvalue references
+#  HAS_CXX11_SIZEOF_MEMBER      - sizeof() non-static members
+#  HAS_CXX11_STATIC_ASSERT      - static_assert()
 
 #=============================================================================
 # Copyright 2011,2012 Rolf Eike Beer <eike@sf-mail.de>
