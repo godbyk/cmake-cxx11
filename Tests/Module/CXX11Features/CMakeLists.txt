@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3 FATAL_ERROR)
 project(Cxx11Features CXX)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../Modules")
+
 include(CheckCXX11Features)
 
 foreach (flag IN ITEMS
