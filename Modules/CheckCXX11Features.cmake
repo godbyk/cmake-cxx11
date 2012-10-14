@@ -5,6 +5,7 @@
 #  CXX11_COMPILER_FLAGS         - the compiler flags needed to get C++11 features
 #
 #  HAS_CXX11_AUTO               - auto keyword
+#  HAS_CXX11_AUTO_RET_TYPE      - function declaration with deduced return types
 #  HAS_CXX11_CLASS_OVERRIDE     - override and final keywords for classes and methods
 #  HAS_CXX11_CONSTEXPR          - constexpr keyword
 #  HAS_CXX11_CSTDINT_H          - cstdint header
@@ -12,6 +13,7 @@
 #  HAS_CXX11_FUNC               - __func__ preprocessor constant
 #  HAS_CXX11_INITIALIZER_LIST   - initializer list
 #  HAS_CXX11_LAMBDA             - lambdas
+#  HAS_CXX11_LIB_REGEX          - regex library
 #  HAS_CXX11_LONG_LONG          - long long signed & unsigned types
 #  HAS_CXX11_NULLPTR            - nullptr
 #  HAS_CXX11_RVALUE_REFERENCES  - rvalue references
@@ -114,6 +116,7 @@ endfunction(cxx11_check_feature)
 
 cxx11_check_feature("__func__" HAS_CXX11_FUNC)
 cxx11_check_feature("auto" HAS_CXX11_AUTO)
+cxx11_check_feature("auto_ret_type" HAS_CXX11_AUTO_RET_TYPE)
 cxx11_check_feature("class_override_final" HAS_CXX11_CLASS_OVERRIDE)
 cxx11_check_feature("constexpr" HAS_CXX11_CONSTEXPR)
 cxx11_check_feature("cstdint" HAS_CXX11_CSTDINT_H)
@@ -122,6 +125,7 @@ cxx11_check_feature("initializer_list" HAS_CXX11_INITIALIZER_LIST)
 cxx11_check_feature("lambda" HAS_CXX11_LAMBDA)
 cxx11_check_feature("long_long" HAS_CXX11_LONG_LONG)
 cxx11_check_feature("nullptr" HAS_CXX11_NULLPTR)
+cxx11_check_feature("regex" HAS_CXX11_LIB_REGEX)
 cxx11_check_feature("rvalue-references" HAS_CXX11_RVALUE_REFERENCES)
 cxx11_check_feature("sizeof_member" HAS_CXX11_SIZEOF_MEMBER)
 cxx11_check_feature("static_assert" HAS_CXX11_STATIC_ASSERT)
