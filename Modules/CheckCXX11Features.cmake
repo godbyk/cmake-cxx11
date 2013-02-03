@@ -35,6 +35,16 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
+#
+# Each feature may have up to 3 checks, every one of them in it's own file
+# FEATURE.cpp              - example that must build and return 0 when run
+# FEATURE_fail.cpp         - example that must build, but may not return 0 when run
+# FEATURE_fail_compile.cpp - example that must fail compilation
+#
+# The first one is mandatory, the latter 2 are optional and do not depend on
+# each other (i.e. only one may be present).
+#
+
 if (NOT CMAKE_CXX_COMPILER_LOADED)
     message(FATAL_ERROR "CheckCXX11Features modules only works if language CXX is enabled")
 endif ()
