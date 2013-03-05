@@ -54,7 +54,7 @@ else ()
 endif ()
 
 function(cxx_check_feature FEATURE_NAME)
-    string(TOUPPER "CXXFEATURES_${FEATURE_NAME}_FOUND" RESULT_VAR)
+    set(RESULT_VAR "CXXFEATURES_${FEATURE_NAME}_FOUND")
     if (NOT DEFINED ${RESULT_VAR})
         set(_bindir "${CMAKE_CURRENT_BINARY_DIR}/cxx_${FEATURE_NAME}")
 
