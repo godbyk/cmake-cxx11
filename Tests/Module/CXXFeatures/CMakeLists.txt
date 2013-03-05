@@ -26,3 +26,8 @@ endforeach (flag)
 
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} ${CXX11_COMPILER_FLAGS})
 add_executable(CXXFeatures cxxfeatures.cxx)
+
+enable_testing()
+if (NOT CROSS_COMPILING)
+    add_test(NAME CXXFeatures COMMAND CXXFeatures)
+endif ()
