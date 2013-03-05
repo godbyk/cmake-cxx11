@@ -61,9 +61,9 @@ function(cxx_check_feature FEATURE_NAME RESULT_VAR)
         set(_LOG_NAME "\"${FEATURE_NAME}\"")
         message(STATUS "Checking C++ support for ${_LOG_NAME}")
 
-        set(_SRCFILE "${_SRCFILE_BASE}.cpp")
-        set(_SRCFILE_FAIL "${_SRCFILE_BASE}_fail.cpp")
-        set(_SRCFILE_FAIL_COMPILE "${_SRCFILE_BASE}_fail_compile.cpp")
+        set(_SRCFILE "${_SRCFILE_BASE}.cxx")
+        set(_SRCFILE_FAIL "${_SRCFILE_BASE}_fail.cxx")
+        set(_SRCFILE_FAIL_COMPILE "${_SRCFILE_BASE}_fail_compile.cxx")
 
         if (CROSS_COMPILING)
             try_compile(${RESULT_VAR} "${_bindir}" "${_SRCFILE}"
