@@ -34,7 +34,7 @@
 #  License text for the above reference.)
 
 if (NOT CMAKE_CXX_COMPILER_LOADED)
-    message(FATAL_ERROR "CheckCXXFeatures modules only works if language CXX is enabled")
+    message(FATAL_ERROR "CXXFeatures modules only works if language CXX is enabled")
 endif ()
 
 cmake_minimum_required(VERSION 2.8.3)
@@ -53,11 +53,12 @@ else ()
     endif ()
 endif ()
 
-function(cxx_check_feature FEATURE_NAME RESULT_VAR)
+function(cxx_check_feature FEATURE_NAME)
+    string(TOUPPER "CXXFEATURES_${FEATURE_NAME}_FOUND" RESULT_VAR)
     if (NOT DEFINED ${RESULT_VAR})
         set(_bindir "${CMAKE_CURRENT_BINARY_DIR}/cxx_${FEATURE_NAME}")
 
-        set(_SRCFILE_BASE ${CMAKE_CURRENT_LIST_DIR}/CheckCXXFeatures/cxx11-test-${FEATURE_NAME})
+        set(_SRCFILE_BASE ${CMAKE_CURRENT_LIST_DIR}/FindCXXFeatures/cxx11-test-${FEATURE_NAME})
         set(_LOG_NAME "\"${FEATURE_NAME}\"")
         message(STATUS "Checking C++ support for ${_LOG_NAME}")
 
@@ -128,7 +129,18 @@ set(_CXX_ALL_FEATURES
     variadic_templates
 )
 
+if (NOT CXXFEATURES_FIND_COMPONENTS)
+    set(CXXFEATURES_FIND_COMPONENTS ${_CXX_ALL_FEATURES})
+endif ()
+
 foreach (_cxx_feature IN LISTS _CXX_ALL_FEATURES)
+    string(TOUPPER "${_cxx_feature}" _FEATURE_UPPER)
     string(TOUPPER "HAS_CXX_${_cxx_feature}" FEATURE_NAME)
     cxx_check_feature(${_cxx_feature} ${FEATURE_NAME})
 endforeach (_cxx_feature)
+
+include(FindPackageHandleStandardArgs)
+set(DUMMY_VAR TRUE)
+find_package_handle_standard_args(CXXFeatures REQUIRED_VARS DUMMY_VAR HANDLE_COMPONENTS)
+unset(DUMMY_VAR)
+unset(_CXX_ALL_FEATURES)
