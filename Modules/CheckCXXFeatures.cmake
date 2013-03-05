@@ -111,17 +111,24 @@ function(cxx_check_feature FEATURE_NAME RESULT_VAR)
     endif (NOT DEFINED ${RESULT_VAR})
 endfunction(cxx_check_feature)
 
-cxx_check_feature("static_assert" HAS_CXX_STATIC_ASSERT)
-cxx_check_feature("long_long" HAS_CXX_LONG_LONG)
-cxx_check_feature("auto" HAS_CXX_AUTO)
-cxx_check_feature("rvalue-references" HAS_CXX_RVALUE_REFERENCES)
-cxx_check_feature("constexpr" HAS_CXX_CONSTEXPR)
-cxx_check_feature("sizeof_member" HAS_CXX_SIZEOF_MEMBER)
-cxx_check_feature("__func__" HAS_CXX_FUNC)
-cxx_check_feature("nullptr" HAS_CXX_NULLPTR)
-cxx_check_feature("cstdint" HAS_CXX_CSTDINT_H)
-cxx_check_feature("initializer_list" HAS_CXX_INITIALIZER_LIST)
-cxx_check_feature("class_override_final" HAS_CXX_CLASS_OVERRIDE)
-cxx_check_feature("decltype" HAS_CXX_DECLTYPE)
-cxx_check_feature("lambda" HAS_CXX_LAMBDA)
-cxx_check_feature("variadic_templates" HAS_CXX_VARIADIC_TEMPLATES)
+set(_CXX_ALL_FEATURES
+    static_assert
+    long_long
+    auto
+    rvalue-references
+    constexpr
+    sizeof_member
+    __func__
+    nullptr
+    cstdint
+    initializer_list
+    class_override_final
+    decltype
+    lambda
+    variadic_templates
+)
+
+foreach (_cxx_feature IN LISTS _CXX_ALL_FEATURES)
+    string(TOUPPER "HAS_CXX_${_cxx_feature}" FEATURE_NAME)
+    cxx_check_feature(${_cxx_feature} ${FEATURE_NAME})
+endforeach (_cxx_feature)

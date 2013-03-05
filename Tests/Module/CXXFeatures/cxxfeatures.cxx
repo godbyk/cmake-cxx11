@@ -1,4 +1,4 @@
-#if defined(HAS_CXX_CSTDINT_H)
+#if defined(HAS_CXX_CSTDINT)
 #include <cstdint>
 #endif
 
@@ -6,7 +6,7 @@
 
 struct thing {
     unsigned char one;
-#if defined(HAS_CXX_CSTDINT_H)
+#if defined(HAS_CXX_CSTDINT)
     uint32_t four;
 #endif
 #if defined(HAS_CXX_LONG_LONG)
@@ -28,10 +28,10 @@ int main()
     static_assert(1 < 42, "Your C++ compiler is b0rked");
 #endif /* HAS_CXX_STATIC_ASSERT */
 
-#if defined(HAS_CXX_FUNC)
+#if defined(HAS_CXX___FUNC__)
     const char *funcname = __func__;
     printf("the name of main() function is: %s\n", funcname);
-#endif /* HAS_CXX_FUNC */
+#endif /* HAS_CXX___FUNC__ */
 
 #if defined(HAS_CXX_SIZEOF_MEMBER)
     size_t onesize = sizeof(thing::one);
@@ -39,12 +39,12 @@ int main()
     static_assert(sizeof(thing::one) == 1, "Your char is not one byte long");
 #endif /* HAS_CXX_STATIC_ASSERT */
 
-#if defined(HAS_CXX_CSTDINT_H)
+#if defined(HAS_CXX_CSTDINT)
     size_t foursize = sizeof(thing::four);
 #if defined(HAS_CXX_STATIC_ASSERT)
     static_assert(sizeof(thing::four) == 4, "Your uint32_t is not 32 bit long");
 #endif /* HAS_CXX_STATIC_ASSERT */
-#endif /* HAS_CXX_CSTDINT_H */
+#endif /* HAS_CXX_CSTDINT */
 #if defined(HAS_CXX_LONG_LONG)
     size_t eightsize = sizeof(thing::eight);
 #if defined(HAS_CXX_STATIC_ASSERT)
