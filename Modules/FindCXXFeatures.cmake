@@ -2,26 +2,29 @@
 #
 # When found it will set the following variables
 #
-#  CXX11_COMPILER_FLAGS         - the compiler flags needed to get C++11 features
+#  CXX11_COMPILER_FLAGS                   - the compiler flags needed to get C++11 features
 #
-#  HAS_CXX_AUTO                 - auto keyword
-#  HAS_CXX_CLASS_OVERRIDE       - override and final keywords for classes and methods
-#  HAS_CXX_CONSTEXPR            - constexpr keyword
-#  HAS_CXX_CSTDINT_H            - cstdint header
-#  HAS_CXX_DECLTYPE             - decltype keyword
-#  HAS_CXX_FUNC                 - __func__ preprocessor constant
-#  HAS_CXX_INITIALIZER_LIST     - initializer list
-#  HAS_CXX_LAMBDA               - lambdas
-#  HAS_CXX_LONG_LONG            - long long signed & unsigned types
-#  HAS_CXX_NULLPTR              - nullptr
-#  HAS_CXX_RVALUE_REFERENCES    - rvalue references
-#  HAS_CXX_SIZEOF_MEMBER        - sizeof() non-static members
-#  HAS_CXX_STATIC_ASSERT        - static_assert()
-#  HAS_CXX_VARIADIC_TEMPLATES   - variadic templates
+#  CXXFeatures_auto_FOUND                 - auto keyword
+#  CXXFeatures_class_override_final_FOUND - override and final keywords for classes and methods
+#  CXXFeatures_constexpr_FOUND            - constexpr keyword
+#  CXXFeatures_cstdint_header_FOUND       - cstdint header
+#  CXXFeatures_decltype_FOUND             - decltype keyword
+#  CXXFeatures_defaulted_functions_FOUND  - default keyword for functions
+#  CXXFeatures_deleted_functions_FOUND    - delete keyword for functions
+#  CXXFeatures_func_identifier_FOUND      - __func__ preprocessor constant
+#  CXXFeatures_initializer_list_FOUND     - initializer list
+#  CXXFeatures_lambda_FOUND               - lambdas
+#  CXXFeatures_long_long_FOUND            - long long signed & unsigned types
+#  CXXFeatures_nullptr_FOUND              - nullptr
+#  CXXFeatures_rvalue_references_FOUND    - rvalue references
+#  CXXFeatures_sizeof_member_FOUND        - sizeof() non-static members
+#  CXXFeatures_static_assert_FOUND        - static_assert()
+#  CXXFeatures_variadic_templates_FOUND   - variadic templates
 
 #=============================================================================
 # Copyright 2011,2012,2013 Rolf Eike Beer <eike@sf-mail.de>
 # Copyright 2012 Andreas Weis
+# Copyright 2013 Jan Kundrát
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file Copyright.txt for details.
@@ -54,78 +57,82 @@ else ()
 endif ()
 
 function(cxx_check_feature FEATURE_NAME)
-    set(RESULT_VAR "CXXFEATURES_${FEATURE_NAME}_FOUND")
-    if (NOT DEFINED ${RESULT_VAR})
-        set(_bindir "${CMAKE_CURRENT_BINARY_DIR}/cxx_${FEATURE_NAME}")
+    set(RESULT_VAR "CXXFeatures_${FEATURE_NAME}_FOUND")
+    if (DEFINED ${RESULT_VAR})
+        return()
+    endif()
 
-        set(_SRCFILE_BASE ${CMAKE_CURRENT_LIST_DIR}/FindCXXFeatures/cxx11-test-${FEATURE_NAME})
-        set(_LOG_NAME "\"${FEATURE_NAME}\"")
-        message(STATUS "Checking C++ support for ${_LOG_NAME}")
+    set(_bindir "${CMAKE_CURRENT_BINARY_DIR}/cxx_${FEATURE_NAME}")
 
-        set(_SRCFILE "${_SRCFILE_BASE}.cxx")
-        set(_SRCFILE_FAIL "${_SRCFILE_BASE}_fail.cxx")
-        set(_SRCFILE_FAIL_COMPILE "${_SRCFILE_BASE}_fail_compile.cxx")
+    set(_SRCFILE_BASE ${CMAKE_CURRENT_LIST_DIR}/FindCXXFeatures/cxx11-test-${FEATURE_NAME})
+    set(_LOG_NAME "\"${FEATURE_NAME}\"")
+    message(STATUS "Checking C++ support for ${_LOG_NAME}")
 
-        if (CROSS_COMPILING)
-            try_compile(${RESULT_VAR} "${_bindir}" "${_SRCFILE}"
-                        COMPILE_DEFINITIONS "${CXX11_COMPILER_FLAGS}")
-            if (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL})
-                try_compile(${RESULT_VAR} "${_bindir}_fail" "${_SRCFILE_FAIL}"
-                            COMPILE_DEFINITIONS "${CXX11_COMPILER_FLAGS}")
-            endif (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL})
-        else (CROSS_COMPILING)
-            try_run(_RUN_RESULT_VAR _COMPILE_RESULT_VAR
-                    "${_bindir}" "${_SRCFILE}"
+    set(_SRCFILE "${_SRCFILE_BASE}.cxx")
+    set(_SRCFILE_FAIL "${_SRCFILE_BASE}_fail.cxx")
+    set(_SRCFILE_FAIL_COMPILE "${_SRCFILE_BASE}_fail_compile.cxx")
+
+    if (CROSS_COMPILING)
+        try_compile(${RESULT_VAR} "${_bindir}" "${_SRCFILE}"
                     COMPILE_DEFINITIONS "${CXX11_COMPILER_FLAGS}")
-            if (_COMPILE_RESULT_VAR AND NOT _RUN_RESULT_VAR)
-                set(${RESULT_VAR} TRUE)
-            else (_COMPILE_RESULT_VAR AND NOT _RUN_RESULT_VAR)
-                set(${RESULT_VAR} FALSE)
-            endif (_COMPILE_RESULT_VAR AND NOT _RUN_RESULT_VAR)
-            if (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL})
-                try_run(_RUN_RESULT_VAR _COMPILE_RESULT_VAR
-                        "${_bindir}_fail" "${_SRCFILE_FAIL}"
-                         COMPILE_DEFINITIONS "${CXX11_COMPILER_FLAGS}")
-                if (_COMPILE_RESULT_VAR AND _RUN_RESULT_VAR)
-                    set(${RESULT_VAR} TRUE)
-                else (_COMPILE_RESULT_VAR AND _RUN_RESULT_VAR)
-                    set(${RESULT_VAR} FALSE)
-                endif (_COMPILE_RESULT_VAR AND _RUN_RESULT_VAR)
-            endif (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL})
-        endif (CROSS_COMPILING)
-        if (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL_COMPILE})
-            try_compile(_TMP_RESULT "${_bindir}_fail_compile" "${_SRCFILE_FAIL_COMPILE}"
+        if (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL})
+            try_compile(${RESULT_VAR} "${_bindir}_fail" "${_SRCFILE_FAIL}"
                         COMPILE_DEFINITIONS "${CXX11_COMPILER_FLAGS}")
-            if (_TMP_RESULT)
-                set(${RESULT_VAR} FALSE)
-            else (_TMP_RESULT)
+        endif ()
+    else ()
+        try_run(_RUN_RESULT_VAR _COMPILE_RESULT_VAR
+                "${_bindir}" "${_SRCFILE}"
+                COMPILE_DEFINITIONS "${CXX11_COMPILER_FLAGS}")
+        if (_COMPILE_RESULT_VAR AND NOT _RUN_RESULT_VAR)
+            set(${RESULT_VAR} TRUE)
+        else ()
+            set(${RESULT_VAR} FALSE)
+        endif ()
+        if (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL})
+            try_run(_RUN_RESULT_VAR _COMPILE_RESULT_VAR
+                    "${_bindir}_fail" "${_SRCFILE_FAIL}"
+                     COMPILE_DEFINITIONS "${CXX11_COMPILER_FLAGS}")
+            if (_COMPILE_RESULT_VAR AND _RUN_RESULT_VAR)
                 set(${RESULT_VAR} TRUE)
-            endif (_TMP_RESULT)
-        endif (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL_COMPILE})
+            else ()
+                set(${RESULT_VAR} FALSE)
+            endif ()
+        endif ()
+    endif ()
+    if (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL_COMPILE})
+        try_compile(_TMP_RESULT "${_bindir}_fail_compile" "${_SRCFILE_FAIL_COMPILE}"
+                    COMPILE_DEFINITIONS "${CXX11_COMPILER_FLAGS}")
+        if (_TMP_RESULT)
+            set(${RESULT_VAR} FALSE)
+        else ()
+            set(${RESULT_VAR} TRUE)
+        endif ()
+    endif ()
 
-        if (${RESULT_VAR})
-            message(STATUS "Checking C++ support for ${_LOG_NAME}: works")
-        else (${RESULT_VAR})
-            message(STATUS "Checking C++ support for ${_LOG_NAME}: not supported")
-        endif (${RESULT_VAR})
-        set(${RESULT_VAR} ${${RESULT_VAR}} CACHE INTERNAL "C++ support for ${_LOG_NAME}")
-    endif (NOT DEFINED ${RESULT_VAR})
+    if (${RESULT_VAR})
+        message(STATUS "Checking C++ support for ${_LOG_NAME}: works")
+    else ()
+        message(STATUS "Checking C++ support for ${_LOG_NAME}: not supported")
+    endif ()
+    set(${RESULT_VAR} "${${RESULT_VAR}}" CACHE INTERNAL "C++ support for ${_LOG_NAME}")
 endfunction(cxx_check_feature)
 
 set(_CXX_ALL_FEATURES
-    static_assert
-    long_long
     auto
-    rvalue-references
-    constexpr
-    sizeof_member
-    __func__
-    nullptr
-    cstdint
-    initializer_list
     class_override_final
+    constexpr
+    cstdint_header
     decltype
+    defaulted_functions
+    deleted_functions
+    func_identifier
+    initializer_list
     lambda
+    long_long
+    nullptr
+    rvalue-references
+    sizeof_member
+    static_assert
     variadic_templates
 )
 
@@ -134,8 +141,6 @@ if (NOT CXXFEATURES_FIND_COMPONENTS)
 endif ()
 
 foreach (_cxx_feature IN LISTS _CXX_ALL_FEATURES)
-    string(TOUPPER "${_cxx_feature}" _FEATURE_UPPER)
-    string(TOUPPER "HAS_CXX_${_cxx_feature}" FEATURE_NAME)
     cxx_check_feature(${_cxx_feature} ${FEATURE_NAME})
 endforeach (_cxx_feature)
 
